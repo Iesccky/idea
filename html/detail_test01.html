@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="iesccky">
+<head>
+	<meta charset="UTF-8">
+	<title>something_learn</title>
+</head>
+<body>
+	<table ng-controller="checkCtrl">
+		<thead>
+			<tr>
+				<th><input type="checkbox" class="allc" />选择</th>
+				<th>id</th>
+				<th>名称</th>
+				<th>链接</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in list" imcheck>
+				<td><input type="checkbox"></td>
+				<td>{{item.id}}</td>
+				<td>{{item.title}}</td>
+				<td>{{item.url}}</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+	<script src="../js/angular.js"></script>
+	<script src="../js/angular-route.js"></script>
+	<script src="../js/jquery1102.min.js"></script>
+	<script>
+		(function() {
+			var app = angular.module("iesccky", ["ngRoute"]);
+
+			//-- 数据
+			app.service("pushdata", function() {
+				var list = [
+					{id: 1, title: "数据一", url: "https:www.x.com"},
+					{id: 2, title: "数据二", url: "https:www.xx.com"},
+					{id: 3, title: "数据三", url: "https:www.xxx.com"},
+					{id: 4, title: "数据四", url: "https:www.xxxx.com"}
+				];
+				return function(id) {
+			// 参数为无时,返回所有		
+					if (!id) {
+						return list;
+					}			
+			// 返回匹配的内容	
+					var t = 0;
+					angular.forEach (list, function(val, index) {
+						if (val.id == id) {
+							t = index;
+						}
+					})
+					return list[t];
+				}
+			});
+		// 控制器
+			app.controller("checkCtrl", function($scope, pushdata){
+				$scope.list = pushdata();
+				
+			})
+
+		// 选择事件
+			app.directive("imcheck", function() {
+				return {
+					link: function(scope, elm, attr) {
+						if(scope.$last) {
+							scope.$eval(function() {	
+								var all = angular.element(document.querySelector("thead input"))
+								var item = angular.element(document.querySelectorAll("tbody input"))
+								
+								// console.log(item)
+
+							// 全选事件
+								all.bind("change", function() {
+									var flaga = this.checked;
+
+									// var item = elm.find("tbody").find("input");
+									// for( var i = 0; i < item.length; i++){
+									// 	item[i].checked = flaga
+									// }
+									angular.forEach(item, function(data){
+										data.checked = flaga
+									})
+								})
+
+							// item 选中判断
+								item.bind("change", function() {
+									var flags = this.checked;
+									var isflag = true;
+									if (flags) {
+										for(var i = 0; i < item.length; i++){
+											if ( !item[i].checked ) {
+												isflag = false;
+											}
+										}
+									}
+									all[0].checked = flags && isflag							
+								})
+							}())
+						}
+					}
+				}
+			})
+
+			
+
+		})()
+	</script>
+</html>
