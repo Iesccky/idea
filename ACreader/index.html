@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="acreader">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<title>ACreader</title>
+	<link rel="stylesheet" href="css/reset.css" type="text/css" />
+</head>
+<body ng-controller="mainCtrl">
+	<acheader></acheader>
+	<div ng-view></div>
+
+</body>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-route.js"></script>
+	<script>
+		var app = angular.module("acreader", ["ngRoute"]);
+
+		app.config(["$routeProvider", function($routeProvider) {
+			$routeProvider.when("/index", {
+				templateUrl: "view/article.html",
+				controller: "indexCtrl"
+			}).when("/work", {
+				templateUrl: "view/article.html",
+				controller: "workCtrl"
+			}).when("/cartoon", {
+				templateUrl: "view/article.html",
+				controller: "cartoonCtrl"
+			}).when("/comics", {
+				templateUrl: "view/article.html",
+				controller: "comicsCtrl"
+			}).when("/game", {
+				templateUrl: "view/article.html",
+				controller: "gameCtrl"
+			}).when("/detail/:id/:channelIds", {
+				templateUrl: "view/detail.html",
+				controller: "dCtrl"
+			}).otherwise({
+				redirectTo: "/index"
+			})
+		}])
+
+	// 主页面控制器
+		app.controller("mainCtrl", ["$scope", "$http", "$window", function($scope, $http, $window) {
+			$scope.nav = [{name:"综合", route: "#/index"},
+							{name:"工作情感", route: "#/work"},
+							{name:"动漫文化", route: "#/cartoon"},
+							{name:"漫画小说", route: "#/comics"},
+							{name:"游戏", route: "#/game"}];
+
+		// 后退
+			$scope.goback = function() {
+				$window.history.go(-1);
+			}
+
+		}])
+
+	// 头模板
+		app.directive("acheader", function() {
+			return {
+				templateUrl: "view/acheader.html",
+			}
+		})
+
+	// 导航栏事件及样式变化
+ 		app.directive("evendir", ["$location", function($location) {
+			return {
+				link: function(scope, ele, attr) {
+					if( scope.$last){
+						scope.$eval(function(){
+							var olis = angular.element(document.querySelectorAll("nav li"));
+						// 刷新界面
+							for (var i = 0; i < scope.nav.length; i++) {
+								if (location.hash == scope.nav[i].route){
+									angular.element(olis[i]).addClass("act");
+								}else {
+									angular.element(olis[i]).removeClass("act");
+								}
+							}
+						// 点击变化
+							olis.bind("click", function() {
+								angular.forEach(olis, function(item){
+									angular.element(item).removeClass("act");
+								})
+								angular.element(this).addClass("act");
+							})
+						})
+					}
+				}
+			}
+		}])
+
+	// 各控制器
+	// indexctrl
+		app.controller('indexCtrl', ['$scope', "$http", "applydata", "$filter", function($scope, $http, applydata, $filter){
+			$scope.ishide = false;
+			$scope.isshow = false;
+
+			$scope.darrs = [];
+			$scope.pageno = 1;
+			$scope.params = applydata.setparams("index", 4, $scope.pageno, 110);
+			applydata.jsonp( $scope.params, function(data){
+				$scope.darrs = $scope.darrs.concat( data.data.list );
+				$scope.ishide = true;
+				$scope.isshow = true;
+			})
+			
+			$scope.loadmsgs = function() {
+				$scope.ishide = false;
+				$scope.pageno++;
+				$scope.params = applydata.setparams("index", 4, $scope.pageno, 110)
+				applydata.addmore($scope.params, function(data){
+					$scope.darrs = $scope.darrs.concat( data.data.list );
+					$scope.ishide = true;
+				})
+			}
+		}])
+
+	// workCtrl
+		app.controller('workCtrl', ['$scope', "$http", "applydata", "$filter", function($scope, $http, applydata, $filter){
+
+			$scope.darrs = [];
+			$scope.ishide = false;
+			$scope.isshow = false;
+			$scope.pageno = 1;
+			$scope.params = applydata.setparams("work", 4, $scope.pageno, 73);
+			applydata.jsonp( $scope.params, function(data){
+				$scope.darrs = $scope.darrs.concat( data.data.list );
+				$scope.ishide = true;
+				$scope.isshow = true;
+			})
+
+			$scope.loadmsgs = function() {
+				$scope.ishide = false;
+				$scope.pageno++;
+				$scope.params = applydata.setparams("work", 4, $scope.pageno, 73)
+				applydata.addmore($scope.params, function(data){
+					$scope.darrs = $scope.darrs.concat( data.data.list )
+					$scope.ishide = true;
+				})
+			}
+		}])
+
+	// cartoonCtrl
+		app.controller('cartoonCtrl', ['$scope', "$http", "applydata", "$filter", function($scope, $http, applydata, $filter){
+
+			$scope.darrs = [];
+			$scope.ishide = false;
+			$scope.isshow = false;
+			$scope.pageno = 1;
+			$scope.params = applydata.setparams("cartoon", 4, $scope.pageno, 74);
+			applydata.jsonp( $scope.params, function(data){
+				$scope.darrs = $scope.darrs.concat( data.data.list );
+				$scope.ishide = true;
+				$scope.isshow = true;
+			})
+
+			$scope.loadmsgs = function() {
+				$scope.pageno++;
+				$scope.ishide = false;
+				$scope.params = applydata.setparams("cartoon", 4, $scope.pageno, 74)
+				applydata.addmore($scope.params, function(data){
+					$scope.darrs = $scope.darrs.concat( data.data.list );
+					$scope.ishide = true;
+				})
+			}
+		}])
+
+
+	// comicsCtrl
+		app.controller('comicsCtrl', ['$scope', "$http", "applydata", "$filter", function($scope, $http, applydata, $filter){
+
+			$scope.darrs = [];
+			$scope.ishide = false;
+			$scope.isshow = false;
+			$scope.pageno = 1;
+			$scope.params = applydata.setparams("comics", 4, $scope.pageno, 75);
+			applydata.jsonp( $scope.params, function(data){
+				$scope.darrs = $scope.darrs.concat( data.data.list );
+				$scope.ishide = true;
+				$scope.isshow = true;
+			})
+
+			$scope.loadmsgs = function() {
+				$scope.pageno++;
+				$scope.ishide = false;
+				$scope.params = applydata.setparams("comics", 4, $scope.pageno, 75)
+				applydata.addmore($scope.params, function(data){
+					$scope.darrs = $scope.darrs.concat( data.data.list );
+					$scope.ishide = true;
+				})
+			}
+		}])
+	// gameCtrl
+		app.controller('gameCtrl', ['$scope', "$http", "applydata", "$filter", function($scope, $http, applydata, $filter){
+
+			$scope.darrs = [];
+			$scope.ishide = false;
+			$scope.isshow = false;
+			$scope.pageno = 1;
+			$scope.params = applydata.setparams("game", 4, $scope.pageno, 164);
+			applydata.jsonp( $scope.params, function(data){
+				$scope.darrs = $scope.darrs.concat( data.data.list );
+				$scope.ishide = true;
+				$scope.isshow = true;
+			})
+
+			$scope.loadmsgs = function() {
+				$scope.pageno++;
+				$scope.ishide = false;
+				$scope.params = applydata.setparams("game", 4, $scope.pageno, 164)
+				applydata.addmore($scope.params, function(data){
+					$scope.darrs = $scope.darrs.concat( data.data.list );
+					$scope.ishide = true;
+				})
+			}
+		}])
+
+	// dCtrl
+		app.controller("dCtrl", ["$scope", "$http", "applydata", "$routeParams", "$sce",
+			"$filter", function($scope, $http, applydata, $routeParams, $sce, $filter) {
+
+	
+			$scope.ishide = false;
+			$scope.isshow = false;
+		// 获取点击的具体内容
+			// console.log($routeParams);
+			$scope.channelId = $routeParams.channelId;
+			$scope.id = $routeParams.id;
+
+			$http.jsonp("http://localhost:1206/detail", {
+				params: {
+					channelId: $scope.channelId,
+					id: $scope.id,
+					callback: "JSON_CALLBACK"
+				}
+			}).success(function(data) {
+				
+				$scope.data = data.msg.data;
+				$scope.html = data.msg.data.article.content;
+
+				$scope.obj = data.com.data.commentContentArr;
+				$scope.comts = [];
+
+				for(var it in $scope.obj) {
+					if(typeof $scope.obj[it] != 'function'){
+						$scope.comts.push($scope.obj[it])						
+					}
+				}
+
+				$scope.html = $sce.trustAsHtml($scope.html);
+				$scope.ishide = true;
+				$scope.isshow = true;
+			})
+		}])
+
+
+    // 请求数据
+	app.service("applydata", function($http) {
+		return {
+		//http请求	
+			jsonp: function(arg , fn) {
+				$http.jsonp(arg.url, {
+					params: arg.args
+				}).success(function(data){
+					fn(data);
+				})
+			},
+		// 加载更多	
+			addmore: function(url, args, fn){
+				this.jsonp(url, args, fn);
+			},
+		// 参数
+			setparams: function(route, n1, n2, n3) {
+				return {
+					url: "http://localhost:1206/"+ route,
+					args: {
+						sort: n1,
+						pageNo: n2,
+						channelIds: n3,
+						callback: "JSON_CALLBACK"
+					}
+				}
+			}
+		}
+	})
+
+	// 时间格式 	
+	app.filter("totime", function() {
+		return function(input) {
+		// 发布时间
+
+			var pday = new Date( input );
+			// 	
+			// console.log(pday)
+			// var pday = new Date( pday );
+			// console.log(pday)
+			var y = pday.getFullYear();
+			// var m =  (pday.getMonth()+1 < 10 ? '0'+(pday.getMonth()+1) : pday.getMonth()+1);
+			var m = pday.getMonth() + 1;
+			var d = pday.getDate();
+			var h = pday.getHours();
+			var mi = pday.getMinutes();
+			var s = pday.getSeconds();
+
+		//当前	
+			var nday = new Date();
+			var nd = nday.getDate();
+			var gtime = nday.getTime();
+
+		//差
+			var oneh =  parseInt((gtime - input) / 1000 / 3600 % 24);
+			var onem =  parseInt((gtime - input) / 1000 / 60 % 60);
+			var ones = 	parseInt((gtime - input) / 1000 % 60)
+
+			switch( nd - d ) {
+				case 0:
+					return oneh == 0? onem == 0 ? ones +"秒前" : onem +"分前" : oneh + "时" + onem+ "分前";
+					break;
+				case 1:
+					return "昨天" + h + "时" + mi + "分"
+					break;
+				case 2:
+					return "前天" + h + "时" + mi + "分"
+					break;
+				default:
+					return m+"月"+d+"日 "+h+"时"+mi+"分";
+			}
+		}
+	})
+	app.filter("ftime", function() {
+		return function(input) {
+			return Date.parse(new Date(input));
+		}
+	})
+	</script>
+</html>

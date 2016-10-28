@@ -1,0 +1,29 @@
+body, html, h1, h2, h3, h4, h5, h6, p, ul, li, dl, dt, dd {
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none
+}
+ul, li {
+	list-style: none
+}
+h1, h2, h3, h4, h5, h6, b, bold {
+	font-weight: 500
+}
+i, em {
+	font-style: normal;
+}
+body, html {
+	font-size: 100px;
+	font-family: "微软雅黑", "Times New Roman", "Arial"
+}
+
+.clearf:after {
+	height: 0;
+	content: ".";
+	overflow: hidden;
+	display: block;
+	visibility: hidden;
+	clear: both;
+}

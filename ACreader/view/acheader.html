@@ -1,0 +1,73 @@
+<header class="header">
+	<div>
+		<h3>
+			<i class="menu"><img src="http://localhost/ACreader/img/menu.png" title="" alt=""></i>
+			<span>ACreader</span>
+			<em class="logo" ng-click="goback()"><img src="http://localhost/ACreader/img/logo.png" title="" alt=""></em>
+		</h3>
+	</div>
+	<nav class="nav">
+		<ul>
+			<li ng-repeat="item in nav" class="wid5" evendir><a ng-href="{{item.route}}">{{item.name}}</a></li>
+		</ul>
+	</nav>	
+</header>
+
+<style>
+	.header {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 0.80rem;
+		z-index: 9999
+	}
+	.header h3 {
+		padding: 0 0.6em;
+		height: 0.44rem;
+		overflow: hidden;
+		text-align: center;
+		font-size: 18px;
+		color: #f00;
+		line-height: 0.44rem;
+		font-weight: 700;
+		background: #fefefe
+	}
+	.header h3 img {
+		margin-top: 0.06rem;
+	}
+	.menu {
+		float: left;
+	}
+	.logo {
+		float: right;
+	}
+
+/**/
+	.nav {
+		height: 0.36rem;
+		font-size: 14px;
+		background: #f3f3f3;
+		line-height: 0.36rem;
+	}
+	.nav li {
+		float: left;
+		text-align: center;
+	}
+	.nav li a {
+		display: block;
+		width: 100%;
+		height: 100%;
+		color: #8ACFF2
+	}
+	li.act a {
+		color: red;
+		background: #
+	}
+	.wid5 {
+		width: 20%
+	}
+</style>
+
+
+

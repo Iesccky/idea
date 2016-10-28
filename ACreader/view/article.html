@@ -1,0 +1,143 @@
+<section class="cont" ng-show="isshow">
+	<h3 class="tit">最新发布</h3>
+	<ul class="lists">
+		<li ng-repeat="item in darrs">
+			<a ng-href="#/detail/{{item.contentId}}/{{item.channelId}}">
+				<div class="msg">
+					<h4 class="listtit">{{item.title}}</h4>
+					<p class="descri">{{item.description}}</p>
+					<p class="views">
+						<span>评论: {{item.comments}}</span>
+						<span>围观: {{item.views}}</span>
+					</p>
+				</div>
+			</a>
+			<div class="user clearf">
+				<img ng-src="{{item.user.userImg}}" title="" alt="" />
+				<span class="u_name">{{item.user.username}}</span>
+				<span class="ptime">{{item.releaseDate|totime}}</span>
+			</div>
+		</li>
+	</ul>
+	<h3 class="loadmore" ng-click="loadmsgs()">加载更多...</h3>
+</section>
+<div class="loading" ng-hide="ishide">
+<!--  -->
+	<img src="http://localhost/ACreader/img/loading.png" title="" alt="" class="loadimg on" />
+</div>
+<!-- css -->
+<style>
+.cont {
+	margin-top: 0.80rem;
+	margin-bottom: 40px;
+	font-size: 14px;
+}
+.cont .tit {
+	height: 0.30rem;
+	line-height: 0.30rem;
+	fonr-size: 16px;
+	color: #95B1F8;
+	text-indent: 0.5em;
+	background: #fcfcfd
+}
+
+/* list*/
+
+.lists {
+	padding-bottom: 0.02rem;
+	margin-bottom: 0.06rem;
+	background: #fcfcfd
+}
+.lists li {
+	padding: 0.04rem 0.04rem 0.08rem;
+	font-size: 14px;
+	border-bottom: 1px solid #D7CECE
+}
+.msg {
+	padding-bottom: 0.01rem
+}
+.listtit {
+	margin-bottom: 0.25em;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.5;
+	font-size: 16px;
+	color: #333
+}
+.descri {
+	color: #999;
+	line-height: 1.15;
+	text-indent: 2em
+}
+.views {
+	padding-right: 2em;
+	text-align: right;
+	color: #888
+}
+.views span {
+	margin-left: 1em 
+}
+/*user*/
+.user {
+	height: 0.3rem;
+	padding-right: 1em;
+	line-height: 0.3rem
+}
+.user img {
+	float: left;
+	margin-right: 1em;
+	height: 0.3rem;
+	width: 0.3rem;
+}
+.u_name {
+	float: left;
+	margin-top: 0.5em;
+	color: #3bb3d0
+}
+.ptime {
+	float: right;
+	margin-top: 0.5em;
+	color: #aaa;
+}
+
+ /*加载更多*/
+.loadmore {
+	width: 100%;
+	height: 2.5em;
+	font-size: 16px;
+	line-height: 2.5;
+	text-align: center;
+}
+
+.loading {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-top: -0.16rem;
+	margin-left: -0.16rem;
+	width: 0.32rem;
+	height: 0.32rem;
+	z-index: 999;
+	text-align: center;
+}
+.on {
+	animation: m_play 2s linear infinite
+}
+.loadimg {
+	position: absolute;
+	left: 0;
+	transition: 0
+}
+
+@keyframes m_play {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+</style>
+

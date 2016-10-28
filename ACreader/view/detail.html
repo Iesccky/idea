@@ -1,0 +1,127 @@
+<div class="dcont" ng-show="isshow">
+	<div class="titmsg">
+		<h4 class="dtit">{{data.title}}</h4>
+		<p class="clearf">
+			<span class="uname"><b>UP主</b>：{{data.owner.name}}</span>
+			<span class="ptime">{{data.releaseDate|totime}}</span>
+		</p>
+	</div>
+</div>
+<div ng-bind-html="html" class="msg"></div>
+<div class="loading" ng-hide="ishide">
+	<img src="http://localhost/ACreader/img/loading.png" title="" alt="" class="loadimg on" />
+</div>
+<p style="font-size: 16px;">评论:</p>
+<div class="comment">
+	<ul>
+		<li ng-repeat="lis in comts|orderBy:'count':true" class="u_com clearf">
+			<img ng-src="{{lis.userImg}}" title="" alt="">
+			<div class="cons">
+				<p class="u_msg">#<i>{{lis.count}}</i>&nbsp;<span class="u_name">{{lis.userName}}</span>&nbsp;发表于{{lis.postDate|ftime|totime}}</p>
+				<p>{{lis.content}}</p>
+			</div>
+								
+		</li>
+	</ul>
+</div>
+
+
+
+<style>
+	.dcont {
+		margin-top: 0.80rem;
+		padding: 0.6em 0.6em 0.2em;
+		font-size: 14px;
+	}
+	.dtit {
+		font-size: 18px;
+		font-weight: 700;
+	}
+	.titmsg .clearf {
+		/*padding: 0 0.4em;*/
+		line-height: 2;
+	}
+
+	.uname {
+		float: left;
+		color: #3bb3d0
+	}
+	.uname b {
+		font-weight: 700;
+		color: #333
+	}
+	.ptime {
+		float: right;
+		color: #aaa
+	}
+	
+	.msg {
+		margin: 0 auto;
+		margin-bottom: 1em;
+		width: 96%!important;
+		font-size: 18px;
+	}
+	.msg img {
+		max-width: 100%!important; 
+	}
+
+/*loading*/
+	.loading {
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		margin-top: -0.16rem;
+		margin-left: -0.16rem;
+		width: 0.32rem;
+		height: 0.32rem;
+		z-index: 999;
+		text-align: center;
+	}
+	.on {
+		animation: m_play 2s linear infinite
+	}
+	.loadimg {
+		position: absolute;
+		left: 0;
+		transition: 0
+	}
+
+	@keyframes m_play {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	/*com*/
+	.comment {
+		font-size: 14px;
+		background: #fcfcfc
+	}
+	.u_com {
+		position: relative;
+		padding: 0.1rem 0.04rem;
+		margin-bottom: 0.1rem; 
+	}
+	.u_com img {
+		position: absolute;
+		width: 40px;
+		border-radius: 0.04rem;
+	}
+	.cons {
+		position: relative;
+		padding-left: 44px;
+		line-height: 1.5
+		/*max-width: 90%; */
+		/*display: inline;*/
+	}
+	.u_msg {
+		color: #999;
+		background: #EDF8FA
+	}
+	.u_name {
+		color: #000
+	}
+</style>
