@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>yys</title>
+	<style>
+		#cvs {
+			display: block;
+			margin: 0 auto;
+			width: 1000px;
+			height: 600px;
+			border: 1px solid #00f;
+		}
+	</style>
+</head>
+<body>
+	<div id="cvs"></div>
+	<!-- <canvas id="cvs" width="1000px" height="600px"></canvas> -->
+</body>
+	<script>
+		window.onload = function() {
+			// var cvs = document.getElementById('cvs');
+			// var ctx = cvs.getContext("2d");
+			
+			var arr = [];
+			var cvsbody = document.getElementById('cvs');
+
+			cvsbody.onmousedown = function(e) {
+			//创建画布
+				var canvas = document.createElement("canvas");
+				cvsbody.appendChild(canvas);
+				canvas.width = "1000";
+				canvas.height = "600";
+				var ctx = canvas.getContext("2d");
+				ctx.lineWidth = 10;
+				ctx.strokeStyle = "#CDE45D";
+
+				var e = e || event;
+				var orgx = e.offsetX;
+				var orgy = e.offsetY;
+				
+				arr.push({
+					x: orgx,
+					y: orgy
+				})
+				ctx.moveTo(arr[0].x, arr[0].y);
+
+				cvsbody.onmousemove = function(e) {
+					var ev = e || event;
+					var movex = ev.offsetX;
+					var movey = ev.offsetY;
+					arr.push({
+						x: movex,
+						y: movey
+					})
+					var len = arr.length;
+					ctx.lineTo(arr[len - 1].x, arr[len - 1].y);
+					ctx.stroke();
+				};
+
+				cvsbody.onmouseup = function () {
+				// 移除事件
+					this.onmousemove = null;
+				// 清除轨迹
+					arr.splice(0, arr.length);
+				// 删除画布
+					cvsbody.removeChild(canvas);
+				} 
+			}
+	
+		}
+
+
+	</script>
+</html>
